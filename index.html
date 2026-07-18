@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>株トレーニング - 実データ版</title>
+    <link rel="stylesheet" href="./style.css?v=20260628-3" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Technical Trade Lab</h1>
+        <p class="tagline">株式テクニカル練習ツール</p>
+      </div>
+      <nav class="topbar-actions" aria-label="外部画面">
+        <button id="openTradeRecords" class="topbar-link" type="button">売買記録</button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="chart-area" aria-label="株価チャート">
+        <div class="chart-head">
+          <div>
+            <h2 id="chartTitle" class="chart-title-action" title="クリックして注目銘柄に登録">銘柄をランダム選択中...</h2>
+            <p id="companyName" class="company-name">社名を取得中...</p>
+          </div>
+          <div class="price-readout">
+            <span id="rangeLabel">データ読込中...</span>
+            <strong id="currentDate">--</strong>
+            <strong id="currentPrice">--</strong>
+          </div>
+        </div>
+
+        <div class="canvas-shell">
+          <canvas id="chartCanvas" width="1100" height="620" aria-label="ローソク足チャート"></canvas>
+          <div id="chartHint" class="chart-hint">実データを読み込んでいます</div>
+        </div>
+
+        <div class="range-slider">
+          <span id="sliderStartLabel">--</span>
+          <input id="rangeStart" type="range" min="0" max="1" value="0" step="1" aria-label="表示期間スライダー" />
+          <span id="sliderEndLabel">--</span>
+        </div>
+      </section>
+
+      <aside class="trade-panel" aria-label="設定と売買パネル">
+        <section class="settings-card data-summary">
+          <h2>読み込んだデータ</h2>
+          <label class="field">
+            <span>銘柄コード・銘柄名</span>
+            <input id="symbolInput" type="text" value="" autocomplete="off" list="symbolSuggestions" />
+            <datalist id="symbolSuggestions"></datalist>
+          </label>
+          <div class="timeframe-load-row">
+            <label class="field">
+              <span>足種</span>
+              <select id="timeframe">
+                <option value="1d" selected>日足</option>
+                <option value="1wk">週足</option>
+                <option value="1mo">月足</option>
+              </select>
+            </label>
+            <div class="load-button-row">
+              <button id="loadSymbol" class="primary-btn" type="button">指定銘柄</button>
+              <button id="loadRandomSymbol" class="primary-btn random-load-btn" type="button">ランダム銘柄</button>
+              <button id="loadSymbolLatest" class="primary-btn" type="button">指定銘柄/ 最新</button>
+              <button id="loadRandomLatest" class="primary-btn random-load-btn" type="button">ランダム銘柄/ 最新</button>
+            </div>
+          </div>
+          <dl class="header-data-list">
+            <div>
+              <dt>期間</dt>
+              <dd id="dataPeriod">--</dd>
+            </div>
+            <div>
+              <dt>データ元</dt>
+              <dd id="dataSource">--</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="settings-card">
+          <h2>チャート設定</h2>
+          <div class="display-controls">
+            <label class="field compact">
+              <span>表示本数</span>
+              <select id="windowSize">
+                <option value="45">45</option>
+                <option value="60" selected>60</option>
+                <option value="90">90</option>
+                <option value="120">120</option>
+              </select>
+            </label>
+            <label class="field start-date-field">
+              <span>表示開始日</span>
+              <input id="startDate" type="date" />
+            </label>
+          </div>
+          <div class="ma-settings" aria-label="移動平均線設定">
+            <div class="ma-row ma-head">
+              <span>表示</span>
+              <span>期間</span>
+              <span>色</span>
+            </div>
+            <label class="ma-row">
+              <input class="ma-enabled" type="checkbox" checked />
+              <input class="ma-period" type="number" value="5" min="1" max="300" step="1" />
+              <input class="ma-color" type="color" value="#ff1f1f" />
+            </label>
+            <label class="ma-row">
+              <input class="ma-enabled" type="checkbox" checked />
+              <input class="ma-period" type="number" value="20" min="1" max="300" step="1" />
+              <input class="ma-color" type="color" value="#006dff" />
+            </label>
+            <label class="ma-row">
+              <input class="ma-enabled" type="checkbox" checked />
+              <input class="ma-period" type="number" value="50" min="1" max="300" step="1" />
+              <input class="ma-color" type="color" value="#8a2be2" />
+            </label>
+            <label class="ma-row">
+              <input class="ma-enabled" type="checkbox" checked />
+              <input class="ma-period" type="number" value="100" min="1" max="300" step="1" />
+              <input class="ma-color" type="color" value="#ff9500" />
+            </label>
+            <label class="ma-row">
+              <input class="ma-enabled" type="checkbox" checked />
+              <input class="ma-period" type="number" value="200" min="1" max="300" step="1" />
+              <input class="ma-color" type="color" value="#aeb6c2" />
+            </label>
+          </div>
+          <div class="playback-settings">
+            <label class="field">
+              <span>速度</span>
+              <input id="speed" type="range" min="120" max="1200" value="420" step="60" />
+            </label>
+            <div class="playback-buttons">
+              <button id="playPause" class="primary-btn" type="button">▶ 再生</button>
+              <div class="step-buttons">
+                <button id="stepBack" class="icon-btn" type="button" title="1本戻る" aria-label="1本戻る">‹</button>
+                <button id="stepForward" class="icon-btn" type="button" title="1本進む" aria-label="1本進む">›</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="summary chart-save-panel">
+          <button id="saveChartImage" class="primary-btn chart-save-btn" type="button">チャート保存</button>
+          <button id="analyzeChartInChatGPT" class="primary-btn chart-save-btn chart-analyze-btn" type="button">チャートコピー</button>
+          <button id="saveWatchlistPdf" class="primary-btn chart-save-btn chart-pdf-btn" type="button">注目銘柄PDF</button>
+          <button id="saveTopMarketCapPdf" class="primary-btn chart-save-btn chart-top-pdf-btn" type="button">上位10PDF</button>
+          <button id="saveTopMarketCap100Pdf" class="primary-btn chart-save-btn chart-top-pdf-btn" type="button">上位100PDF</button>
+          <button id="saveMonitorPdf" class="primary-btn chart-save-btn chart-top-pdf-btn" type="button">監視銘柄PDF</button>
+          <button id="saveTop10DailyWeeklyPdf" class="primary-btn chart-save-btn chart-top-pdf-btn combined-timeframe-pdf-btn" type="button">上位10PDF<br>（日足+週足）</button>
+          <button id="saveTop100DailyWeeklyPdf" class="primary-btn chart-save-btn chart-top-pdf-btn combined-timeframe-pdf-btn" type="button">上位100PDF<br>（日足+週足）</button>
+        </section>
+
+        <section class="order-box chart-order">
+          <h2>注文</h2>
+          <div class="order-value">
+            <span>時価</span>
+            <strong id="orderValue">--</strong>
+          </div>
+          <label class="field">
+            <span>株数</span>
+            <div class="quantity-stepper">
+              <button id="quantityDownLarge" type="button" aria-label="株数を500株減らす">-500</button>
+              <button id="quantityDown" type="button" aria-label="株数を100株減らす">-100</button>
+              <input id="quantity" type="text" value="1,000" inputmode="numeric" autocomplete="off" />
+              <button id="quantityUp" type="button" aria-label="株数を100株増やす">+100</button>
+              <button id="quantityUpLarge" type="button" aria-label="株数を500株増やす">+500</button>
+            </div>
+          </label>
+          <div class="button-grid">
+            <div class="order-action-pair spot-actions">
+              <span>現物</span>
+              <button id="cashBuy" class="buy" type="button">買</button>
+              <button id="cashSell" class="sell" type="button">売</button>
+            </div>
+            <div class="order-action-pair margin-actions">
+              <span>信用</span>
+              <button id="shortSell" class="short" type="button">新規売</button>
+              <button id="coverBuy" class="cover" type="button">返済買</button>
+            </div>
+          </div>
+          <button id="toggleTradeMarkers" class="marker-toggle" type="button" aria-pressed="true">売買マーカー 表示</button>
+          <p id="message" class="message" role="status" hidden></p>
+          <div class="position-actions order-actions">
+            <button id="scoreButton" class="ghost-btn" type="button">成績を見る</button>
+            <button id="resetButton" class="ghost-btn warn" type="button">取引リセット</button>
+          </div>
+        </section>
+
+        <section class="summary account-box">
+          <h2>取引・評価損益</h2>
+          <h3 class="account-subtitle first-account-subtitle">◎株式取引</h3>
+          <dl class="account-list">
+            <div class="featured-stock-row highlight-account-row">
+              <dt>株式評価損益</dt>
+              <dd id="spotPnl">--</dd>
+            </div>
+            <div class="featured-stock-row highlight-account-row">
+              <dt>保有株数</dt>
+              <dd id="shareCount">--</dd>
+            </div>
+            <div class="small-stock-row">
+              <dt>取得単価</dt>
+              <dd id="spotAverageCost">--</dd>
+            </div>
+            <div class="featured-stock-row small-label-row">
+              <dt>株式評価額</dt>
+              <dd id="holdingValue">--</dd>
+            </div>
+          </dl>
+          <h3 class="account-subtitle">◎信用取引</h3>
+          <dl class="account-list">
+            <div class="featured-stock-row highlight-account-row">
+              <dt>建玉評価損益</dt>
+              <dd id="shortPnl">--</dd>
+            </div>
+            <div class="featured-stock-row highlight-account-row">
+              <dt>建玉数</dt>
+              <dd id="shortShareCount">--</dd>
+            </div>
+            <div class="small-stock-row">
+              <dt>建値</dt>
+              <dd id="shortAveragePrice">--</dd>
+            </div>
+            <div class="featured-stock-row small-label-row">
+              <dt>建玉金額</dt>
+              <dd id="shortPositionAmount">--</dd>
+            </div>
+          </dl>
+          <h3 class="account-subtitle total-account-subtitle">◎総評価・累計</h3>
+          <dl class="account-list account-main account-total-bottom">
+            <div>
+              <dt>総評価額</dt>
+              <dd id="assetTotal">--</dd>
+            </div>
+            <div>
+              <dt>総評価損益</dt>
+              <dd id="totalPnl">--</dd>
+            </div>
+            <div class="small-stock-row">
+              <dt>累積株式評価損益</dt>
+              <dd id="spotTotalPnl">--</dd>
+            </div>
+            <div class="small-stock-row">
+              <dt>累積建玉評価損益</dt>
+              <dd id="shortTotalPnl">--</dd>
+            </div>
+            <div class="account-divider"></div>
+            <div>
+              <dt>現物買付余力</dt>
+              <dd id="cashValue">--</dd>
+            </div>
+          </dl>
+          <label class="field initial-cash-inline">
+            <span>開始資金</span>
+            <input id="initialCash" type="text" value="20,000,000" inputmode="numeric" autocomplete="off" />
+            <span class="initial-cash-unit">円</span>
+          </label>
+        </section>
+
+        <section class="summary history-box watchlist-box">
+          <h2>注目銘柄</h2>
+          <button id="registerCurrentSymbol" class="primary-btn watchlist-register" type="button">表示銘柄を登録</button>
+          <div id="watchlist" class="watchlist">登録銘柄はまだありません。</div>
+        </section>
+
+        <section class="summary monitor-box">
+          <h2>監視銘柄</h2>
+          <div class="monitor-actions">
+            <label class="primary-btn monitor-load">
+              CSV読込
+              <input id="monitorCsvFile" type="file" accept=".csv,text/csv" />
+            </label>
+            <button id="clearMonitorList" class="ghost-btn warn monitor-clear" type="button">クリア</button>
+          </div>
+          <div id="monitorList" class="monitor-list">CSVファイルを読み込んでください。</div>
+        </section>
+      </aside>
+    </main>
+
+    <dialog id="scoreDialog">
+      <form method="dialog">
+        <h2>成績</h2>
+        <div id="scoreBody" class="score-body"></div>
+        <button class="primary-btn" type="submit">閉じる</button>
+      </form>
+    </dialog>
+
+  <script type="module" src="./app.js?v=20260628-43"></script>
+  </body>
+</html>

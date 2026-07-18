@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>売買記録 - Technical Trade Lab</title>
+    <link rel="stylesheet" href="./trade-records.css?v=20260518-1" />
+  </head>
+  <body>
+    <header class="records-header">
+      <div>
+        <p class="eyebrow">Technical Trade Lab</p>
+        <h1>売買記録</h1>
+      </div>
+    </header>
+
+    <main class="records-layout">
+      <section class="aggregate-grid" aria-label="売買集計">
+        <article class="aggregate-card">
+          <h2>本日の取引累計</h2>
+          <dl id="todaySummary" class="metric-list"></dl>
+        </article>
+        <article class="aggregate-card symbol-aggregate">
+          <h2>本日の銘柄ごとの取引累計</h2>
+          <div id="todaySymbols" class="symbol-summary"></div>
+        </article>
+        <article class="aggregate-card">
+          <h2>今までの総取引累計</h2>
+          <dl id="allSummary" class="metric-list"></dl>
+          <button id="resetAllRecords" class="records-reset-btn" type="button">総取引記録をリセット</button>
+        </article>
+      </section>
+
+      <section class="records-card">
+        <div class="records-title">
+          <h2>すべての売買</h2>
+          <p id="lastUpdated">更新待ち</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>チャート日付</th>
+                <th>銘柄</th>
+                <th>足種</th>
+                <th>区分</th>
+                <th class="num">株数</th>
+                <th class="num">約定価格</th>
+                <th class="num">損益</th>
+              </tr>
+            </thead>
+            <tbody id="recordsBody">
+              <tr>
+                <td class="empty" colspan="7">まだ取引はありません。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./trade-records.js?v=20260518-1"></script>
+  </body>
+</html>

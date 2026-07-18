@@ -1,0 +1,302 @@
+:root {
+  color-scheme: light;
+  --bg: #eef3f8;
+  --ink: #13223a;
+  --muted: #66758b;
+  --line: #d8e0ec;
+  --panel: #ffffff;
+  --navy: #123a78;
+  --red: #d33a32;
+  --blue: #2865bd;
+  --green: #138a57;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Meiryo, "Hiragino Kaku Gothic ProN", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.records-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 5px clamp(16px, 3vw, 28px) 5px;
+  border-bottom: 1px solid #253b5c;
+  background: var(--navy);
+  color: #fff;
+}
+
+.eyebrow {
+  margin: 0 0 1px;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 1;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.records-layout {
+  display: grid;
+  gap: 18px;
+  padding: 20px 24px 28px;
+}
+
+.aggregate-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-rows: auto auto;
+  gap: 12px;
+}
+
+.aggregate-grid .aggregate-card:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.aggregate-grid .aggregate-card:nth-child(3) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.symbol-aggregate {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.aggregate-card,
+.records-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.aggregate-card {
+  min-height: 138px;
+  padding: 13px 15px;
+  border-radius: 8px;
+}
+
+.symbol-aggregate {
+  min-height: 288px;
+}
+
+.aggregate-card h2 {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 18px;
+}
+
+.metric-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 0;
+}
+
+.metric-list div,
+.symbol-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.metric-list dt,
+.symbol-line span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.metric-list dd,
+.symbol-line strong {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.records-reset-btn {
+  width: 100%;
+  min-height: 34px;
+  margin-top: 12px;
+  border: 1px solid #d8a4a0;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.records-reset-btn:hover {
+  background: #fff5f4;
+}
+
+.symbol-summary {
+  max-height: 232px;
+  overflow: auto;
+}
+
+.symbol-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.symbol-table th,
+.symbol-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e7edf5;
+  white-space: nowrap;
+}
+
+.symbol-table th {
+  background: #f6f9fc;
+  color: #44536a;
+  font-size: 12px;
+  text-align: left;
+}
+
+.symbol-table td {
+  font-weight: 800;
+}
+
+.symbol-empty {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pnl-plus {
+  color: var(--red);
+}
+
+.pnl-minus {
+  color: var(--blue);
+}
+
+.pnl-zero {
+  color: var(--ink);
+}
+
+.records-card {
+  min-height: calc(100vh - 196px);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.records-title {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 17px 18px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.records-title h2 {
+  font-size: 24px;
+}
+
+.records-title p {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+th,
+td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #e7edf5;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f6f9fc;
+  color: #44536a;
+  font-size: 13px;
+}
+
+td {
+  font-weight: 700;
+}
+
+.num {
+  text-align: right;
+}
+
+.action {
+  display: inline-flex;
+  min-width: 54px;
+  justify-content: center;
+  padding: 3px 9px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.action.buy,
+.action.cover {
+  background: var(--red);
+}
+
+.action.sell,
+.action.short {
+  background: var(--blue);
+}
+
+.empty {
+  padding: 60px 20px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .records-header,
+  .records-title {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .aggregate-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .aggregate-grid .aggregate-card:nth-child(1),
+  .aggregate-grid .aggregate-card:nth-child(3),
+  .symbol-aggregate {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}

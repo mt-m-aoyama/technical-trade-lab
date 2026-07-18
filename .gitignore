@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.vercel/
+.agents/
+.codex/
+server.out.txt
+server.err.txt
+__pycache__/
+tmp/
